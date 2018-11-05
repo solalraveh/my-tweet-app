@@ -1,5 +1,5 @@
 # Use Alpine as base
-FROM alpine:latest
+FROM alpine:3.4
 
 # Maintainer
 MAINTAINER andreas@twistlock.com
