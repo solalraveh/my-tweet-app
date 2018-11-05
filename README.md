@@ -1,2 +1,2 @@
 # my-tweet-app
-Docker EE Demo example application
+Docker demo example application
