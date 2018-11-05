@@ -2,7 +2,7 @@
 FROM alpine:latest
 
 # Maintainer
-MAINTAINER andreas@docker.com andreas.lambrecht@docker.com
+MAINTAINER andreas@twistlock.com
 
 # Install python and pip
 RUN apk add --update py2-pip
