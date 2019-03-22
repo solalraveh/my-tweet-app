@@ -41,3 +41,14 @@ steps:
    # See twistcli documentation for more details.
       
   displayName: 'Scan image with Twistlock'
+  
+- script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
+  displayName: 'docker tag'
+
+- script: docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
+  displayName: 'docker login to DockerHub'
+
+- script: docker push securethecloud/my_tweet_app:$(build.buildId)
+  displayName: 'docker push to DockerHub'
+  
+
