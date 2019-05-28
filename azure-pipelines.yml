@@ -35,7 +35,7 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli
+    script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli &&
       sudo chmod +x /usr/bin/twistcli'
 
 - task: twistcli-scan@1
