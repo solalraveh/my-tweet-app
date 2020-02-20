@@ -27,11 +27,9 @@ steps:
     command: 'download'
     downloadDirectory: '$(System.DefaultWorkingDirectory)'
     feedsToUse: 'internal'
-    vstsFeed: 'twistcli'
-    vstsFeedPackage: 'twistcli'
-    vstsPackageVersion: '19.3.321'
-    feedsToUsePublish: 'internal'
-    versionOption: 'patch'
+    vstsFeed: '582b9380-2959-4311-8506-d40a6a9016b2/818b27f2-2a03-4e97-aca0-1f33c48ea12a'
+    vstsFeedPackage: '14f85eea-fd74-45f6-9bfd-7427cb7e77e3'
+    vstsPackageVersion: '19.11.512'
 
 - task: CmdLine@2
   inputs:
