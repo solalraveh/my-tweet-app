@@ -38,15 +38,16 @@ steps:
     script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli &&
       sudo chmod +x /usr/bin/twistcli'
 
-- task: twistcli-scan@1
+- task: prisma-cloud-compute-scan@1
   inputs:
     scanType: 'images'
-    twistlockService: 'My Twistlock Console'
+    twistlockService: 'Prisma Cloud Compute awilke demo environment'
     vulnerabilityThreshold: 'high'
     onlyFixed: false
     gracePeriod: '0'
-    complianceThreshold: 'critical'
-  
+    complianceThreshold: 'high'
+    artifact: 'my_tweet_app:$(build.buildId)'
+
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker tag'
 
