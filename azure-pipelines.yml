@@ -32,7 +32,7 @@ steps:
     vstsPackageVersion: '20.4.163'
 
 
-
+- task: CmdLine@2
   inputs:
     script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli &&
       sudo chmod +x /usr/bin/twistcli'
