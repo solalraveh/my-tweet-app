@@ -36,15 +36,19 @@ steps:
     script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli &&
       sudo chmod +x /usr/bin/twistcli'
 
-- task: prisma-cloud-compute-scan@1
+- task: CmdLine@2
   inputs:
-    scanType: 'images'
-    twistlockService: 'Prisma Cloud Compute awilke demo environment'
-    vulnerabilityThreshold: 'high'
-    onlyFixed: false
-    gracePeriod: '0'
-    complianceThreshold: 'high'
-    artifact: 'my_tweet_app:$(build.buildId)'
+    script: '/usr/bin/twistcli image scan --address https://console-master-edge.awilke.demo.twistlock.com --user awilke_paloaltonetworks_com --password MyDemo123# --details --ci my_tweet_app:$(build.buildId)
+
+#- task: prisma-cloud-compute-scan@1
+#  inputs:
+#    scanType: 'images'
+#    twistlockService: 'Prisma Cloud Compute awilke demo environment'
+#    vulnerabilityThreshold: 'high'
+#    onlyFixed: false
+#    gracePeriod: '0'
+#   complianceThreshold: 'high'
+#    artifact: 'my_tweet_app:$(build.buildId)'
 
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker tag'
