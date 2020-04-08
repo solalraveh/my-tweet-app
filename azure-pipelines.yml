@@ -31,7 +31,6 @@ steps:
     vstsFeedPackage: '14f85eea-fd74-45f6-9bfd-7427cb7e77e3'
     vstsPackageVersion: '20.4.163'
 
-
 - task: CmdLine@2
   inputs:
     script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli &&
@@ -39,7 +38,7 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: '/usr/bin/twistcli image scan --address https://console-master-edge.awilke.demo.twistlock.com --user awilke_paloaltonetworks_com --password MyDemo123# --details --ci my_tweet_app:$(build.buildId)'
+    script: '/usr/bin/twistcli images scan --address https://console-master-edge.awilke.demo.twistlock.com --user awilke_paloaltonetworks_com --password MyDemo123# --details --ci my_tweet_app:$(build.buildId)'
 
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker tag'
