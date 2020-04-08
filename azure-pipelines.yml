@@ -36,7 +36,7 @@ steps:
     script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli &&
       sudo chmod +x /usr/bin/twistcli'
 
-- task: CmdLine@2
+- script: CmdLine@2
   inputs:
     script: '/usr/bin/twistcli image scan --address https://console-master-edge.awilke.demo.twistlock.com --user awilke_paloaltonetworks_com --password MyDemo123# --details --ci my_tweet_app:$(build.buildId)
 
