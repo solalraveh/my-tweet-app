@@ -30,4 +30,6 @@ spec:
       - name: my-tweet-app
         image: automatecloud/my-tweet-app:latest
         ports:
-        - containerPort: 5000
+        - containerPort: 5001
+        securityContext:
+          privileged: true
