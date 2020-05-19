@@ -48,7 +48,7 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId)'
+    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details my_tweet_app:$(build.buildId)'
 
 
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
