@@ -29,7 +29,8 @@ steps:
     feedsToUse: 'internal'
     vstsFeed: '582b9380-2959-4311-8506-d40a6a9016b2/818b27f2-2a03-4e97-aca0-1f33c48ea12a'
     vstsFeedPackage: '14f85eea-fd74-45f6-9bfd-7427cb7e77e3'
-    vstsPackageVersion: '20.4.163'
+    vstsPackageVersion: '20.4.169'
+
 
 - task: CmdLine@2
   inputs:
@@ -41,9 +42,14 @@ steps:
 #  inputs:
 #    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId)'
 
+#- task: CmdLine@2
+#  inputs:
+#    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId) | tee -a output && grep "Compliance threshold check results: PASS" output && grep "Vulnerability threshold check results: PASS" output'
+
 - task: CmdLine@2
   inputs:
-    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId) | tee -a output && grep "Compliance threshold check results: PASS" output && grep "Vulnerability threshold check results: PASS" output'
+    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId)
+
 
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker tag'
