@@ -33,3 +33,4 @@ spec:
         - containerPort: 5000
         securityContext:
           privileged: true
+          runAsNonRoot: false

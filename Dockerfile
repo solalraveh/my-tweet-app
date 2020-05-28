@@ -2,7 +2,7 @@
 FROM alpine:3.5
 
 # Maintainer
-MAINTAINER andreas@twistlock.com
+MAINTAINER awilke@paloaltonetworks.com
 
 # Install python and pip
 RUN apk add --update py2-pip
