@@ -60,4 +60,11 @@ steps:
 - script: docker push securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker push to DockerHub'
   
-
+- task: Prisma Cloud IaC Scan@1
+  inputs:
+    Path: '.'
+    prismaCloudService: 'Test Connection'
+    High: '0'
+    Medium: '0'
+    Low: '0'
+    Operator: 'or'
