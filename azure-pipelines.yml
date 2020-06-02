@@ -38,14 +38,6 @@ steps:
       sudo chmod +x /usr/bin/twistcli'
 
 
-#- task: CmdLine@2
-#  inputs:
-#    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId)'
-
-#- task: CmdLine@2
-#  inputs:
-#    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId) | tee -a output && grep "Compliance threshold check results: PASS" output && grep "Vulnerability threshold check results: PASS" output'
-
 - task: CmdLine@2
   inputs:
     script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details my_tweet_app:$(build.buildId)'
@@ -54,8 +46,8 @@ steps:
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker tag'
 
-#- script: docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
-#  displayName: 'docker login to DockerHub'
+- script: docker login -u $(DOCKERHUB_USER) -p $(DOCKERHUB_PASSWORD)
+  displayName: 'docker login to DockerHub'
 
 - script: docker push securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker push to DockerHub'
@@ -68,3 +60,13 @@ steps:
     Medium: '0'
     Low: '0'
     Operator: 'or'
+
+# Testing....
+
+#- task: CmdLine@2
+#  inputs:
+#    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId)'
+
+#- task: CmdLine@2
+#  inputs:
+#    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId) | tee -a output && grep "Compliance threshold check results: PASS" output && grep "Vulnerability threshold check results: PASS" output'
