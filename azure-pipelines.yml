@@ -54,7 +54,7 @@ steps:
   
 - task: Prisma Cloud IaC Scan@1
   inputs:
-    Path: '$(System.DefaultWorkingDirectory)/deployment'
+    Path: './deployment'
     prismaCloudService: 'Test Connection'
     High: '0'
     Medium: '0'
