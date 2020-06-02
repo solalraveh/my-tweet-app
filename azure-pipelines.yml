@@ -49,8 +49,8 @@ steps:
 - script: docker login -u $(DOCKERHUB_USER) -p $(DOCKERHUB_PASSWORD)
   displayName: 'docker login to DockerHub'
 
-#- script: docker push securethecloud/my_tweet_app:$(build.buildId)
-#  displayName: 'docker push to DockerHub'
+- script: docker push securethecloud/my_tweet_app:$(build.buildId)
+  displayName: 'docker push to DockerHub'
   
 - task: Prisma Cloud IaC Scan@1
   inputs:
