@@ -56,9 +56,9 @@ steps:
   inputs:
     Path: '.'
     prismaCloudService: 'Test Connection'
-    High: '1'
-    Medium: '1'
-    Low: '1'
+    High: '0'
+    Medium: '0'
+    Low: '0'
     Operator: 'or'
 
 # Testing....
