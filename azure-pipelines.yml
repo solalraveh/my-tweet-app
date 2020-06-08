@@ -52,18 +52,9 @@ steps:
 - script: docker push securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker push to DockerHub'
   
-- task: Prisma Cloud IaC Scan@1
+- task: CmdLine@2
   inputs:
-    Path: './deployment'
-    prismaCloudService: 'Test Connection'
-    High: '0'
-    Medium: '0'
-    Low: '0'
-    Operator: 'or'
-
-  #- task: CmdLine@2
-  #inputs:
-  #  script: '/usr/bin/twistcli iac scan deployment/my_tweet_app_k8s.yml --address $(PC_CONSOLE_URL) --user $(IAC_USER) --password $(IAC_PASS)'
+    script: '/usr/bin/twistcli iac scan deployment/my_tweet_app_k8s.yml --address $(PC_CONSOLE_URL) --user $(IAC_USER) --password $(IAC_PASS)'
   
 # Testing....
 

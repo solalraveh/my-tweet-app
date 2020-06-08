@@ -27,7 +27,7 @@ EXPOSE 5000
 #USER andreas
 
 # Healthcheck intstructions
-HEALTHCHECK CMD curl --fail http://localhost:5000/ || exit 1
+# HEALTHCHECK CMD curl --fail http://localhost:5000/ || exit 1
 
 # Run the application
 CMD ["python", "/usr/src/app/app.py"]
