@@ -61,9 +61,9 @@ steps:
     Low: '0'
     Operator: 'or'
 
-  - task: CmdLine@2
-  inputs:
-    script: '/usr/bin/twistcli iac scan deployment/my_tweet_app_k8s.yml --address $(PC_CONSOLE_URL) --user $(IAC_USER) --password $(IAC_PASS)'
+  #- task: CmdLine@2
+  #inputs:
+  #  script: '/usr/bin/twistcli iac scan deployment/my_tweet_app_k8s.yml --address $(PC_CONSOLE_URL) --user $(IAC_USER) --password $(IAC_PASS)'
   
 # Testing....
 
