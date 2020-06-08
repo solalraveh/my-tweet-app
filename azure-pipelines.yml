@@ -40,6 +40,7 @@ steps:
 
 
 - task: CmdLine@2
+  displayName: 'Image Vulnerability and Compliance Scan'
   inputs:
     script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details my_tweet_app:$(build.buildId)'
 
@@ -54,6 +55,7 @@ steps:
   displayName: 'docker push to DockerHub'
   
 - task: CmdLine@2
+  displayName: 'Infrasturcture as Code Scan - Kubernetes deployment file'
   inputs:
     script: '/usr/bin/twistcli iac scan deployment/my_tweet_app_k8s.yml --address $(PC_CONSOLE_URL) --user $(IAC_USER) --password $(IAC_PASS)'
   
