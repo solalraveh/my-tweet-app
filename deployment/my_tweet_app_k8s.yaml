@@ -34,3 +34,4 @@ spec:
         securityContext:
           privileged: true
           runAsNonRoot: false
+          readOnlyRootFilesystem: false
