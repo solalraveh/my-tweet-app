@@ -17,8 +17,8 @@ variables:
   imageName: 'my_tweet_app:$(build.buildId)'
 
 steps:
-- script: docker build -f Dockerfile -t $(imageName) .
-  displayName: 'docker build'
+#- script: docker build -f Dockerfile -t $(imageName) .
+#  displayName: 'docker build'
 
 - task: Bash@3
   inputs:
