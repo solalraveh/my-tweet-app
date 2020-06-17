@@ -19,6 +19,16 @@ variables:
 steps:
 - script: docker build -f Dockerfile -t $(imageName) .
   displayName: 'docker build'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      
+      echo 'Hello world'
+      ls -l $(System.DefaultWorkingDirectory)
+      ls -l $(System.DefaultWorkingDirectory)/deployment
   
 # Use a script step to pull twistcli and scan the image that was built
 
