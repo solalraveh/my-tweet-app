@@ -72,7 +72,7 @@ steps:
 - task: Prisma Cloud IaC Scan@1
   inputs:
     Path: 'deployment/'
-    prismaCloudService: 'Test Connection'
+    prismaCloudService: 'PrismaCloudTesting'
     High: '0'
     Medium: '0'
     Low: '0'
