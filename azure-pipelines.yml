@@ -54,10 +54,10 @@ steps:
 - script: docker push securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker push to DockerHub'
   
-#- task: CmdLine@2
-#  displayName: 'Infrasturcture as Code Scan - Kubernetes deployment file'
-#  inputs:
-#    script: '/usr/bin/twistcli iac scan deployment/my_tweet_app_k8s.yml --address $(PC_CONSOLE_URL) --user $(IAC_USER) --password $(IAC_PASS)'
+- task: CmdLine@2
+  displayName: 'Infrasturcture as Code Scan - Kubernetes deployment file'
+  inputs:
+    script: '/usr/bin/twistcli iac scan deployment/my_tweet_app_k8s.yml --address $(PC_CONSOLE_URL) --user $(IAC_USER) --password $(IAC_PASS)'
   
 # Testing....
 
