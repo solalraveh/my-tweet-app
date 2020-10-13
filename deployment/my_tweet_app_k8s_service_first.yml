@@ -12,7 +12,7 @@ spec:
   selector:
     app: my-tweet-app
 ---
-apiVersion: apps/v1
+apiVersion: apps/v1beta
 kind: Deployment
 metadata:
   name: my-tweet-app
