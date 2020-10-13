@@ -79,7 +79,16 @@ steps:
 #  inputs:
 #    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId) | tee -a output && grep "Compliance threshold check results: PASS" output && grep "Vulnerability threshold check results: PASS" output'
 
-- task: Prisma Cloud IaC Scan@1
+#- task: Prisma Cloud IaC Scan@1
+#  inputs:
+#    Path: 'deployment/'
+#    prismaCloudService: 'PrismaCloudTesting'
+#    High: '0'
+#    Medium: '0'
+#    Low: '0'
+#    Operator: 'or'
+
+- task: Prisma Cloud IaC Scan@2
   inputs:
     Path: 'deployment/'
     prismaCloudService: 'PrismaCloudTesting'
