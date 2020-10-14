@@ -55,8 +55,7 @@ steps:
 # Create new deployment file
 - task: CmdLine@2
   inputs:
-    script: 'sed \'s/<BUILD>/$(build.buildId)/g\' $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_template.yml > $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml'
-
+    script: 'sed ''s/<BUILD>/$(build.buildId)/g'' $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_template.yml > $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml'
 
 # Deploy the new image inside the openshift environment
 - task: oc-cmd@2
