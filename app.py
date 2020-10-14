@@ -8,7 +8,8 @@ app = Flask(__name__)
 images = [
     "https://media.giphy.com/media/F3O8iAVrKgiR6QtgnE/giphy.gif",
     "https://media.giphy.com/media/A7ZbCuv0fJ0POGucwV/giphy.gif",
-    "https://media.giphy.com/media/dOJt6XZlQw8qQ/giphy.gif"
+    "https://media.giphy.com/media/dOJt6XZlQw8qQ/giphy.gif",
+    "https://media.giphy.com/media/gVBDitqGpVvRC/giphy.gif"
 ]
 
 @app.route('/')
