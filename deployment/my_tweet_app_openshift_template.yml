@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mytweetapp
-        image: securethecloud/my_tweet_app:latest
+        image: securethecloud/my_tweet_app:<BUILD>
         ports:
         - containerPort: 5000
         securityContext:
