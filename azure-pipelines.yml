@@ -55,17 +55,17 @@ steps:
 - script: docker push securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker push to DockerHub'
 
-- task: oc-setup@2
-  inputs:
-    connectionType: 'OpenShift Connection Service'
-    openshiftService: 'Openshift Demo Cluster'
-    version: '4.5'
+#- task: oc-setup@2
+#  inputs:
+#    connectionType: 'OpenShift Connection Service'
+#    openshiftService: 'Openshift Demo Cluster'
+#    version: '4.5'
 
 - task: oc-cmd@2
   inputs:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'Openshift Demo Cluster'
-    version: '4.5'
+    version: '4.5.13'
     cmd: 'oc get nodes'
 # Testing....
 
