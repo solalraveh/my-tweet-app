@@ -1,72 +1,66 @@
 # Sample Azure DevOps pipeline
 
-# Showcasing integration of twistcli scanning
-
-# This sample relies on environment variables for connectivity to Twistlock
-
-# TL_USER:  The Twistlock user with the CI User role
-# TL_PASS:  The password for this user account
-# TL_CONSOLE_URL:  The base URL for the console -- http://console.<my_company>.com:8083 -- without a trailing /
-
 # First, build our image
 # Use a Linux-based agent such as Ubuntu 16.04
 
 pool:
   vmImage: 'Ubuntu 16.04'
 
+# Define the variable of the imageName
 variables:
   imageName: 'my_tweet_app:$(build.buildId)'
 
+# Build the docker image based on the Dockerfile
 steps:
 - script: docker build -f Dockerfile -t $(imageName) .
   displayName: 'docker build'
-  
-# Use a script step to pull twistcli and scan the image that was built
 
-- task: UniversalPackages@0
+# Scan the new build container image
+- task: prisma-cloud-compute-scan@2
   inputs:
-    command: 'download'
-    downloadDirectory: '$(System.DefaultWorkingDirectory)'
-    feedsToUse: 'internal'
-    vstsFeed: '582b9380-2959-4311-8506-d40a6a9016b2/818b27f2-2a03-4e97-aca0-1f33c48ea12a'
-    vstsFeedPackage: '14f85eea-fd74-45f6-9bfd-7427cb7e77e3'
-    vstsPackageVersion: '20.4.169'
+    scanType: 'images'
+    twistlockService: 'Prisma Cloud Compute awilke demo environment'
+    artifact: 'my_tweet_app:$(build.buildId)''
 
-
-- task: CmdLine@2
-  displayName: 'Make twstcli executable'
-  inputs:
-    script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli &&
-      sudo chmod +x /usr/bin/twistcli'
-
-
-- task: CmdLine@2
-  displayName: 'Image Vulnerability and Compliance Scan'
-  inputs:
-    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details my_tweet_app:$(build.buildId)'
-
-
+# Tag the image with buildid
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker tag'
 
+# Tag image with latest
+- script: docker tag $(imageName) securethecloud/my_tweet_app:latest
+  displayName: 'docker tag'
+
+# Login to DockerHub
 - script: docker login -u $(DOCKERHUB_USER) -p $(DOCKERHUB_PASSWORD)
   displayName: 'docker login to DockerHub'
 
+# Push image with buildid to docker hub
 - script: docker push securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker push to DockerHub'
 
-#- task: oc-setup@2
-#  inputs:
-#    connectionType: 'OpenShift Connection Service'
-#    openshiftService: 'Openshift Demo Cluster'
-#    version: '4.5'
+# Push image with latest tag to docker hub
+- script: docker push securethecloud/my_tweet_app:latest
+  displayName: 'docker push to DockerHub'
 
+# Doing Infrastructure as Code Scanning
+- task: Prisma Cloud IaC Scan@1
+  inputs:
+    Path: 'deployment/'
+    prismaCloudService: 'Test Connection'
+    High: '5'
+    Medium: '2'
+    Low: '5'
+    Operator: 'or'
+
+# Deploy the new image inside the openshift environment
 - task: oc-cmd@2
   inputs:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'Openshift Demo Cluster'
     version: '4.5.13'
     cmd: 'oc apply -f $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift.yml -n mytweetapp'
+
+
 # Testing....
 
 #- task: CmdLine@2
@@ -76,17 +70,30 @@ steps:
 #- task: CmdLine@2
 #  inputs:
 #    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId) | tee -a output && grep "Compliance threshold check results: PASS" output && grep "Vulnerability threshold check results: PASS" output'
+# Use a script step to pull twistcli and scan the image that was built (not necessary, only for demo purposes)
+#- task: UniversalPackages@0
+#  inputs:
+#    command: 'download'
+#    downloadDirectory: '$(System.DefaultWorkingDirectory)'
+#    feedsToUse: 'internal'
+#    vstsFeed: '582b9380-2959-4311-8506-d40a6a9016b2/818b27f2-2a03-4e97-aca0-1f33c48ea12a'
+#    vstsFeedPackage: '14f85eea-fd74-45f6-9bfd-7427cb7e77e3'
+#    vstsPackageVersion: '20.4.169'
 
-- task: Prisma Cloud IaC Scan@1
-  inputs:
-    Path: 'deployment/'
-    prismaCloudService: 'Test Connection'
-    High: '0'
-    Medium: '0'
-    Low: '0'
-    Operator: 'or'
+# Make twistcli executable
+#- task: CmdLine@2
+#  displayName: 'Make twstcli executable'
+#  inputs:
+#    script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli &&
+#      sudo chmod +x /usr/bin/twistcli'
 
-- task: CmdLine@2
-  displayName: 'Infrasturcture as Code Scan - Kubernetes deployment file'
-  inputs:
-    script: '/usr/bin/twistcli iac scan deployment/my_tweet_app_k8s.yml --address $(PC_CONSOLE_URL) --user $(IAC_USER) --password $(IAC_PASS)'
+
+#- task: CmdLine@2
+#  displayName: 'Image Vulnerability and Compliance Scan'
+#  inputs:
+#    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details 
+
+#- task: CmdLine@2
+#  displayName: 'Infrasturcture as Code Scan - Kubernetes deployment file'
+#  inputs:
+#    script: '/usr/bin/twistcli iac scan deployment/my_tweet_app_k8s.yml --address $(PC_CONSOLE_URL) --user $(IAC_USER) --password $(IAC_PASS)'
