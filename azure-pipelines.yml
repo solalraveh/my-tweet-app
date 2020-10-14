@@ -1,4 +1,5 @@
 # Sample Azure DevOps pipeline
+
 # Showcasing integration of twistcli scanning
 
 # This sample relies on environment variables for connectivity to Twistlock
@@ -53,6 +54,12 @@ steps:
 
 - script: docker push securethecloud/my_tweet_app:$(build.buildId)
   displayName: 'docker push to DockerHub'
+
+- task: oc-setup@2
+  inputs:
+    connectionType: 'OpenShift Connection Service'
+    openshiftService: 'Openshift Demo Cluster'
+    version: '4.5'
 
 - task: oc-cmd@2
   inputs:
