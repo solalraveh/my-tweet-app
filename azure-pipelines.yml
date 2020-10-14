@@ -25,26 +25,27 @@ steps:
 
 # Tag the image with buildid
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
-  displayName: 'docker tagbuildid'
+  displayName: '3. Docker Tag with buildID '
 
 # Tag image with latest
 - script: docker tag $(imageName) securethecloud/my_tweet_app:latest
-  displayName: 'docker taglatest'
+  displayName: '4. Docker Tag with latest'
 
 # Login to DockerHub
 - script: docker login -u $(DOCKERHUB_USER) -p $(DOCKERHUB_PASSWORD)
-  displayName: 'docker login to DockerHub'
+  displayName: '5. Docker login to DockerHub'
 
 # Push image with buildid to docker hub
 - script: docker push securethecloud/my_tweet_app:$(build.buildId)
-  displayName: 'docker push buildid to DockerHub'
+  displayName: '6. Docker Push buildID to DockerHub'
 
 # Push image with latest tag to docker hub
 - script: docker push securethecloud/my_tweet_app:latest
-  displayName: 'docker push latest to DockerHub'
+  displayName: '7. Docker Push latest to DockerHub'
 
 # Doing Infrastructure as Code Scanning
 - task: Prisma Cloud IaC Scan@1
+  displayName: '8. Prisma Cloud IAC Scan'
   inputs:
     Path: 'deployment/'
     prismaCloudService: 'Test Connection'
@@ -55,16 +56,19 @@ steps:
 
 # Create new deployment file
 - task: CmdLine@2
+  displayName: '9. Create New Deployment file'
   inputs:
     script: 'sed ''s/<BUILD>/$(build.buildId)/g'' $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_template.yml > $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml'
 
 - task: CmdLine@2
+  displayName: '10. Check New Deployment file'
   inputs:
     script: |
       cat $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml
 
 # Deploy the new image inside the openshift environment
 - task: oc-cmd@2
+  displayName: '11. Deploy new Container in OpenShift'
   inputs:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'Openshift Demo Cluster'
