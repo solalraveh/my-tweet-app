@@ -13,7 +13,7 @@ variables:
 # Build the docker image based on the Dockerfile
 steps:
 - script: docker build -f Dockerfile -t $(imageName) .
-  displayName: 'docker build'
+  displayName: '1. Build Docker Container'
 
 # Scan the new build container image
 - task: prisma-cloud-compute-scan@2
@@ -21,6 +21,7 @@ steps:
     scanType: 'images'
     twistlockService: 'Prisma Cloud Compute awilke demo environment'
     artifact: 'my_tweet_app:$(build.buildId)'
+    displayName: '2. Prisma Cloud Docker Image Scan'
 
 # Tag the image with buildid
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
