@@ -24,11 +24,11 @@ steps:
 
 # Tag the image with buildid
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
-  displayName: 'docker tag'
+  displayName: 'docker tagbuildid'
 
 # Tag image with latest
 - script: docker tag $(imageName) securethecloud/my_tweet_app:latest
-  displayName: 'docker tag'
+  displayName: 'docker taglatest'
 
 # Login to DockerHub
 - script: docker login -u $(DOCKERHUB_USER) -p $(DOCKERHUB_PASSWORD)
@@ -36,11 +36,11 @@ steps:
 
 # Push image with buildid to docker hub
 - script: docker push securethecloud/my_tweet_app:$(build.buildId)
-  displayName: 'docker push to DockerHub'
+  displayName: 'docker push buildid to DockerHub'
 
 # Push image with latest tag to docker hub
 - script: docker push securethecloud/my_tweet_app:latest
-  displayName: 'docker push to DockerHub'
+  displayName: 'docker push latest to DockerHub'
 
 # Doing Infrastructure as Code Scanning
 - task: Prisma Cloud IaC Scan@1
