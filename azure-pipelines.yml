@@ -52,14 +52,18 @@ steps:
     Low: '5'
     Operator: 'or'
 
+# Create new deployment file
+- task: CmdLine@2
+  inputs:
+    script: 'sed ''s/<BUILD>/$(build.buildId)/g'' $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_template.yml > $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml'
+
 # Deploy the new image inside the openshift environment
 - task: oc-cmd@2
   inputs:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'Openshift Demo Cluster'
     version: '4.5.13'
-    cmd: 'oc apply -f $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift.yml -n mytweetapp'
-
+    cmd: 'oc apply -f $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml -n mytweetapp'
 
 # Testing....
 
