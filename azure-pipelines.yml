@@ -20,7 +20,7 @@ steps:
   displayName: '2. Prisma Cloud Compute Image Scan'
   inputs:
     scanType: 'images'
-    twistlockService: 'Prisma Cloud Compute awilke demo environment'
+    twistlockService: 'Prisma Cloud Compute Openshift Environment'
     artifact: 'my_tweet_app:$(build.buildId)'
 
 # Tag the image with buildid
