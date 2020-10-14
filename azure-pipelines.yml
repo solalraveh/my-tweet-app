@@ -20,7 +20,7 @@ steps:
   inputs:
     scanType: 'images'
     twistlockService: 'Prisma Cloud Compute awilke demo environment'
-    artifact: 'my_tweet_app:$(build.buildId)''
+    artifact: 'my_tweet_app:$(build.buildId)'
 
 # Tag the image with buildid
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
