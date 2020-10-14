@@ -66,7 +66,7 @@ steps:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'Openshift Demo Cluster'
     version: '4.5.13'
-    cmd: 'oc apply deployment/my_tweet_app_openshift.yml -n mytweetapp'
+    cmd: 'oc apply -f deployment/my_tweet_app_openshift.yml -n mytweetapp'
 # Testing....
 
 #- task: CmdLine@2
