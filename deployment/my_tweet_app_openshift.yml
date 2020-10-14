@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mytweetapp
+spec:
+  selector:
+    matchLabels:
+      app: mytweetapp
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: mytweetapp
+    spec:
+      containers:
+      - name: mytweetapp
+        image: automatecloud/my-tweet-app:latest
+        ports:
+        - containerPort: 5000
+        securityContext:
+          privileged: false
+          runAsNonRoot: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mytweetapp
+  labels:
+    app: mytweetapp
+spec:
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  selector:
+    app: mytweetapp
+---
