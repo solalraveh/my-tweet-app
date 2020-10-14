@@ -16,6 +16,13 @@ pool:
 variables:
   imageName: 'my_tweet_app:$(build.buildId)'
 
+- task: oc-cmd@2
+  inputs:
+    connectionType: 'OpenShift Connection Service'
+    openshiftService: 'Openshift Demo Cluster'
+    version: '4.5'
+    cmd: 'oc get nodes'
+
 steps:
 - script: docker build -f Dockerfile -t $(imageName) .
   displayName: 'docker build'
