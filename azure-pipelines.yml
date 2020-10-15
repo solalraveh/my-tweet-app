@@ -43,13 +43,13 @@ steps:
 - task: CmdLine@2
   displayName: 'Image Vulnerability and Compliance Scan'
   inputs:
-    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details my_tweet_app:$(build.buildId) > $(System.DefaultWorkingDirectory)/output.txt' 
+    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details my_tweet_app:$(build.buildId) > output.txt' 
 
 # Echo output.txt
 - task: CmdLine@2
   displayName: 'Image Vulnerability and Compliance Scan'
   inputs:
-    script: 'cat $(System.DefaultWorkingDirectory)/output.txt '
+    script: 'cat output.txt'
 
 # ReBuild the docker image based on the Dockerfile
 - script: docker build -f Dockerfile -t $(imageName) --no-cache .
