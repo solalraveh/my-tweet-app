@@ -51,6 +51,9 @@ steps:
   inputs:
     script: 'cat $(System.DefaultWorkingDirectory)/output.txt '
 
+# ReBuild the docker image based on the Dockerfile
+- script: docker build -f Dockerfile -t $(imageName) .
+  displayName: 'Rebuild Image Build'
 
 # Tag the image with buildid
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
