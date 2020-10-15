@@ -52,7 +52,7 @@ steps:
     script: 'cat $(System.DefaultWorkingDirectory)/output.txt '
 
 # ReBuild the docker image based on the Dockerfile
-- script: docker build -f Dockerfile -t $(imageName) .
+- script: docker build -f Dockerfile -t $(imageName) --no-cache .
   displayName: 'Rebuild Image Build'
 
 # Tag the image with buildid
