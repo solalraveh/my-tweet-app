@@ -43,13 +43,13 @@ steps:
 - task: CmdLine@2
   displayName: 'Image Vulnerability and Compliance Scan'
   inputs:
-    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details > $(System.DefaultWorkingDirectory)/output.txt' 
+    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details my_tweet_app:$(build.buildId) > $(System.DefaultWorkingDirectory)/output.txt' 
 
 # Echo output.txt
 - task: CmdLine@2
   displayName: 'Image Vulnerability and Compliance Scan'
   inputs:
-    script: 'echo $(System.DefaultWorkingDirectory)/output.txt '
+    script: 'cat $(System.DefaultWorkingDirectory)/output.txt '
 
 
 # Tag the image with buildid
