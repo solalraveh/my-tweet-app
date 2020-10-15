@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
 # Copy files required for the app to run
 COPY app.py /usr/src/app/
 COPY templates/index_template.html /usr/src/app/templates/index_template.html
-RUN sed "s/<OUTPUT>/$(cat $(System.DefaultWorkingDirectory)/output.txt)/g" /usr/src/app/templates/index_template.html
+RUN sed "s/<OUTPUT>/$(cat output.txt)/g" /usr/src/app/templates/index_template.html
 # Expose the app on Flask default (5000)
 EXPOSE 5000
 
