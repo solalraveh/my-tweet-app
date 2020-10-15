@@ -16,7 +16,8 @@ RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
 
 # Copy files required for the app to run
 COPY app.py /usr/src/app/
-COPY templates/index.html /usr/src/app/templates/
+COPY templates/index_template.html /usr/src/app/templates/index.html
+RUN sed 's/<OUTPUT>/$PATH/g' /usr/src/app/templates/geekfile.txt
 
 # Expose the app on Flask default (5000)
 EXPOSE 5000
