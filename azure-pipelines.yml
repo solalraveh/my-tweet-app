@@ -23,6 +23,35 @@ steps:
     twistlockService: 'Prisma Cloud Compute Openshift Environment'
     artifact: 'my_tweet_app:$(build.buildId)'
 
+# Use a script step to pull twistcli and scan the image that was built (not necessary, only for demo purposes)
+- task: UniversalPackages@0
+  inputs:
+    command: 'download'
+    downloadDirectory: '$(System.DefaultWorkingDirectory)'
+    feedsToUse: 'internal'
+    vstsFeed: '582b9380-2959-4311-8506-d40a6a9016b2/818b27f2-2a03-4e97-aca0-1f33c48ea12a'
+    vstsFeedPackage: '14f85eea-fd74-45f6-9bfd-7427cb7e77e3'
+    vstsPackageVersion: '20.4.169'
+
+# Make twistcli executable
+- task: CmdLine@2
+  displayName: 'Make twstcli executable'
+  inputs:
+    script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli && sudo chmod +x /usr/bin/twistcli'
+
+# Create output.txt
+- task: CmdLine@2
+  displayName: 'Image Vulnerability and Compliance Scan'
+  inputs:
+    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details > $(System.DefaultWorkingDirectory)/output.txt' 
+
+# Echo output.txt
+- task: CmdLine@2
+  displayName: 'Image Vulnerability and Compliance Scan'
+  inputs:
+    script: 'echo $(System.DefaultWorkingDirectory)/output.txt '
+
+
 # Tag the image with buildid
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
   displayName: '3. Docker Tag with buildID '
@@ -84,28 +113,6 @@ steps:
 #- task: CmdLine@2
 #  inputs:
 #    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId) | tee -a output && grep "Compliance threshold check results: PASS" output && grep "Vulnerability threshold check results: PASS" output'
-# Use a script step to pull twistcli and scan the image that was built (not necessary, only for demo purposes)
-#- task: UniversalPackages@0
-#  inputs:
-#    command: 'download'
-#    downloadDirectory: '$(System.DefaultWorkingDirectory)'
-#    feedsToUse: 'internal'
-#    vstsFeed: '582b9380-2959-4311-8506-d40a6a9016b2/818b27f2-2a03-4e97-aca0-1f33c48ea12a'
-#    vstsFeedPackage: '14f85eea-fd74-45f6-9bfd-7427cb7e77e3'
-#    vstsPackageVersion: '20.4.169'
-
-# Make twistcli executable
-#- task: CmdLine@2
-#  displayName: 'Make twstcli executable'
-#  inputs:
-#    script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli &&
-#      sudo chmod +x /usr/bin/twistcli'
-
-
-#- task: CmdLine@2
-#  displayName: 'Image Vulnerability and Compliance Scan'
-#  inputs:
-#    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details 
 
 #- task: CmdLine@2
 #  displayName: 'Infrasturcture as Code Scan - Kubernetes deployment file'
