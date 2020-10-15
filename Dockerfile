@@ -19,7 +19,7 @@ COPY app.py /usr/src/app/
 COPY templates/index_template.html /usr/src/app/templates/index_template.html
 COPY *.txt /usr/src/app/
 RUN ls -la /usr/src/app/
-RUN sed "s/<OUTPUT>/$(cat \/usr\/src\/app\/output.txt)/g" /usr/src/app/templates/index_template.html
+RUN sed "s/<OUTPUT>/$\(cat \/usr\/src\/app\/output.txt\)/g" /usr/src/app/templates/index_template.html
 # Expose the app on Flask default (5000)
 EXPOSE 5000
 
