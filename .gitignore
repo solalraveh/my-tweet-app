@@ -1,3 +1,4 @@
 test.sh
 Dockerfile copy
 .DS_Store
+azure-pipelines.yml
