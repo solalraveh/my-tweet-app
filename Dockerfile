@@ -32,8 +32,9 @@ EXPOSE 5000
 # HEALTHCHECK CMD curl --fail http://localhost:5000/ || exit 1
 
 # Run the application
-# COPY twistcli /tmp/twistcli
-RUN curl -k -u scanner -p scanner123 --output /tmp/twistcli https://twistlock-console.apps.shiftleft.prismacloud.ninja/api/v1/util/twistcli && chmod a+x /tmp/twistcli && /tmp/twistcli images scan --containerized --address “https://twistlock-console.apps.shiftleft.prismacloud.ninja” -u scanner -p scanner123 --details superimage | tee -a output && grep “Compliance threshold check results: PASS” output && grep “Vulnerability threshold check results: PASS” output
+COPY twistcli /tmp/twistcli
+#RUN curl -k -u scanner -p scanner123 --output /tmp/twistcli https://twistlock-console.apps.shiftleft.prismacloud.ninja/api/v1/util/twistcli && chmod a+x /tmp/twistcli && /tmp/twistcli images scan --containerized --address “https://twistlock-console.apps.shiftleft.prismacloud.ninja” -u scanner -p scanner123 --details superimage | tee -a output && grep “Compliance threshold check results: PASS” output && grep “Vulnerability threshold check results: PASS” output
+RUN chmod a+x /tmp/twistcli && /tmp/twistcli images scan --containerized --address “https://twistlock-console.apps.shiftleft.prismacloud.ninja” -u scanner -p scanner123 --details superimage | tee -a output && grep “Compliance threshold check results: PASS” output && grep “Vulnerability threshold check results: PASS” output
 RUN rm /tmp/twistcli
 
 CMD ["python", "/usr/src/app/app.py"]
