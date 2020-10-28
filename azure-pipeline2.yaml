@@ -1,0 +1,122 @@
+# Sample Azure DevOps pipeline
+
+# First, build our image
+# Use a Linux-based agent such as Ubuntu 16.04
+
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+# Define the variable of the imageName
+variables:
+  imageName: 'my_tweet_app:$(build.buildId)'
+
+# Build the docker image based on the Dockerfile
+steps:
+- script: docker build -f Dockerfile -t $(imageName) .
+  displayName: '1. Docker Image Build'
+
+# Scan the new build container image
+- task: prisma-cloud-compute-scan@2
+  displayName: '2. Prisma Cloud Compute Image Scan'
+  inputs:
+    scanType: 'images'
+    twistlockService: 'Prisma Cloud Compute Openshift Environment'
+    artifact: 'my_tweet_app:$(build.buildId)'
+
+# Use a script step to pull twistcli and scan the image that was built (not necessary, only for demo purposes)
+- task: UniversalPackages@0
+  inputs:
+    command: 'download'
+    downloadDirectory: '$(System.DefaultWorkingDirectory)'
+    feedsToUse: 'internal'
+    vstsFeed: '582b9380-2959-4311-8506-d40a6a9016b2/818b27f2-2a03-4e97-aca0-1f33c48ea12a'
+    vstsFeedPackage: '14f85eea-fd74-45f6-9bfd-7427cb7e77e3'
+    vstsPackageVersion: '20.4.169'
+
+# Make twistcli executable
+- task: CmdLine@2
+  displayName: 'Make twstcli executable'
+  inputs:
+    script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli && sudo chmod +x /usr/bin/twistcli'
+
+# Create output.txt
+- task: CmdLine@2
+  displayName: 'Image Vulnerability and Compliance Scan'
+  inputs:
+    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details my_tweet_app:$(build.buildId) > output.txt' 
+
+# Echo output.txt
+- task: CmdLine@2
+  displayName: 'Image Vulnerability and Compliance Scan'
+  inputs:
+    script: 'ls -la /home/vsts/work/1/s'
+
+# ReBuild the docker image based on the Dockerfile
+- script: docker build -f Dockerfile -t $(imageName) --no-cache .
+  displayName: 'Rebuild Image Build'
+
+# Tag the image with buildid
+- script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
+  displayName: '3. Docker Tag with buildID '
+
+# Tag image with latest
+- script: docker tag $(imageName) securethecloud/my_tweet_app:latest
+  displayName: '4. Docker Tag with latest'
+
+# Login to DockerHub
+- script: docker login -u $(DOCKERHUB_USER) -p $(DOCKERHUB_PASSWORD)
+  displayName: '5. Docker login to DockerHub'
+
+# Push image with buildid to docker hub
+- script: docker push securethecloud/my_tweet_app:$(build.buildId)
+  displayName: '6. Docker Push buildID to DockerHub'
+
+# Push image with latest tag to docker hub
+- script: docker push securethecloud/my_tweet_app:latest
+  displayName: '7. Docker Push latest to DockerHub'
+
+# Doing Infrastructure as Code Scanning
+- task: Prisma Cloud IaC Scan@1
+  displayName: '8. Prisma Cloud IAC Scan'
+  inputs:
+    Path: 'deployment/'
+    prismaCloudService: 'Test Connection'
+    High: '5'
+    Medium: '2'
+    Low: '5'
+    Operator: 'or'
+
+# Create new deployment file
+- task: CmdLine@2
+  displayName: '9. Create New Deployment file'
+  inputs:
+    script: 'sed ''s/<BUILD>/$(build.buildId)/g'' $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_template.yml > $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml'
+
+- task: CmdLine@2
+  displayName: '10. Check New Deployment file'
+  inputs:
+    script: |
+      cat $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml
+# Deploy the new image inside the openshift environment
+- task: oc-cmd@2
+  displayName: '11. Deploy new Container in OpenShift'
+  inputs:
+    connectionType: 'OpenShift Connection Service'
+    openshiftService: 'Openshift Demo Cluster'
+    version: '4.5.13'
+    cmd: 'oc apply -f $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml -n mytweetapp'
+
+# Testing....
+
+#- task: CmdLine@2
+#  inputs:
+#    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId)'
+
+#- task: CmdLine@2
+#  inputs:
+#    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details --ci my_tweet_app:$(build.buildId) | tee -a output && grep "Compliance threshold check results: PASS" output && grep "Vulnerability threshold check results: PASS" output'
+
+#- task: CmdLine@2
+#  displayName: 'Infrasturcture as Code Scan - Kubernetes deployment file'
+#  inputs:
+#    script: '/usr/bin/twistcli iac scan deployment/my_tweet_app_k8s.yml --address $(PC_CONSOLE_URL) --user $(IAC_USER) --password $(IAC_PASS)'
