@@ -15,7 +15,7 @@ steps:
 - script: docker build -f Dockerfile -t $(imageName) .
   displayName: '1. Docker Image Build'
 
-# Scan the new build container image
+# Scan the newly built container image
 - task: prisma-cloud-compute-scan@2
   displayName: '2. Prisma Cloud Compute Image Scan'
   inputs:
@@ -68,11 +68,11 @@ steps:
   displayName: '5. Docker login to DockerHub'
 
 # Push image with buildid to docker hub
-- script: docker push securethecloud/my_tweet_app:$(build.buildId)
+- script: docker push solalraveh/my_tweet_app:$(build.buildId)
   displayName: '6. Docker Push buildID to DockerHub'
 
 # Push image with latest tag to docker hub
-- script: docker push securethecloud/my_tweet_app:latest
+- script: docker push solalraveh/my_tweet_app:latest
   displayName: '7. Docker Push latest to DockerHub'
 
 # Doing Infrastructure as Code Scanning
@@ -80,7 +80,7 @@ steps:
   displayName: '8. Prisma Cloud IAC Scan'
   inputs:
     Path: 'deployment/'
-    prismaCloudService: 'Test Connection'
+    prismaCloudService: 'PrismaCloudTesting'
     High: '5'
     Medium: '2'
     Low: '5'
@@ -104,7 +104,7 @@ steps:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'Openshift Demo Cluster'
     version: '4.5.13'
-    cmd: 'oc apply -f $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml -n mytweetapp'
+    cmd: 'oc apply -f $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml -n mytweetapp_demo'
 
 # Testing....
 
