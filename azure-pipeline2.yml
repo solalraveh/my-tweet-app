@@ -52,8 +52,8 @@ steps:
 #    script: 'ls -la /home/vsts/work/1/s'
 
 # ReBuild the docker image based on the Dockerfile
-- script: docker build -f Dockerfile -t $(imageName) --no-cache .
-  displayName: 'Rebuild Image Build'
+#- script: docker build -f Dockerfile -t $(imageName) --no-cache .
+#  displayName: 'Rebuild Image Build'
 
 # Tag the image with buildid
 - script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
