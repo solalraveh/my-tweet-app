@@ -76,7 +76,7 @@ steps:
   displayName: '7. Docker Push latest to DockerHub'
 
 # Doing Infrastructure as Code Scanning
-- task: Prisma Cloud IaC Scan@1
+- task: Prisma Cloud IaC Scan@2
   displayName: '8. Prisma Cloud IAC Scan'
   inputs:
     Path: 'deployment/'
