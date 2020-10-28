@@ -34,22 +34,22 @@ steps:
 #    vstsPackageVersion: '20.4.169'
 
 # Make twistcli executable
-- task: CmdLine@2
-  displayName: 'Make twstcli executable'
-  inputs:
-    script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli && sudo chmod +x /usr/bin/twistcli'
+#- task: CmdLine@2
+#  displayName: 'Make twstcli executable'
+#  inputs:
+#    script: 'sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli && sudo chmod +x /usr/bin/twistcli'
 
 # Create output.txt
-- task: CmdLine@2
-  displayName: 'Image Vulnerability and Compliance Scan'
-  inputs:
-    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details my_tweet_app:$(build.buildId) > output.txt' 
+#- task: CmdLine@2
+#  displayName: 'Image Vulnerability and Compliance Scan'
+#  inputs:
+#    script: '/usr/bin/twistcli images scan --address $(TL_CONSOLE_URL) --user $(TL_USER) --password $(TL_PASS) --details my_tweet_app:$(build.buildId) > output.txt' 
 
 # Echo output.txt
-- task: CmdLine@2
-  displayName: 'Image Vulnerability and Compliance Scan'
-  inputs:
-    script: 'ls -la /home/vsts/work/1/s'
+#- task: CmdLine@2
+#  displayName: 'Image Vulnerability and Compliance Scan'
+#  inputs:
+#    script: 'ls -la /home/vsts/work/1/s'
 
 # ReBuild the docker image based on the Dockerfile
 - script: docker build -f Dockerfile -t $(imageName) --no-cache .
