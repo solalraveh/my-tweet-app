@@ -104,7 +104,7 @@ steps:
     connectionType: 'OpenShift Connection Service'
     openshiftService: 'Openshift Demo Cluster'
     version: '4.5.13'
-    cmd: 'oc apply -f $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml -n mytweetapp_demo'
+    cmd: 'oc apply -f $(System.DefaultWorkingDirectory)/deployment/my_tweet_app_openshift_new.yml -n mytweetapp-demo'
 
 # Testing....
 
