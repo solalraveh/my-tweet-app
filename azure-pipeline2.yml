@@ -56,11 +56,11 @@ steps:
 #  displayName: 'Rebuild Image Build'
 
 # Tag the image with buildid
-- script: docker tag $(imageName) securethecloud/my_tweet_app:$(build.buildId)
+- script: docker tag $(imageName) solalraveh/my_tweet_app:$(build.buildId)
   displayName: '3. Docker Tag with buildID '
 
 # Tag image with latest
-- script: docker tag $(imageName) securethecloud/my_tweet_app:latest
+- script: docker tag $(imageName) solalraveh/my_tweet_app:latest
   displayName: '4. Docker Tag with latest'
 
 # Login to DockerHub
