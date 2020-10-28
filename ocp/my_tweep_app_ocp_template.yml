@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mytweetapp
-        image: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/my-tweet-app:<BUILD>
+        image: image-registry.openshift-image-registry.svc:5000/pipelines-tutorial/my-tweet-app:0.1.0
         ports:
         - containerPort: 5000
         securityContext:
